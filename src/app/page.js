@@ -1,103 +1,167 @@
-import Image from "next/image";
+"use client";
+import { useEffect, useState } from "react";
+import "./globals.css";
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.js
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [progress, setProgress] = useState(0);
+  const [greeting, setGreeting] = useState("");
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
+  useEffect(() => {
+    function getGreeting() {
+      const hour = new Date().getHours();
+      if (hour >= 5 && hour < 11) setGreeting("Chào buổi sáng");
+      else if (hour >= 11 && hour < 14) setGreeting("Chào buổi trưa");
+      else if (hour >= 14 && hour < 18) setGreeting("Chào buổi chiều");
+      else if (hour >= 18 && hour < 23) setGreeting("Chào buổi tối");
+      else setGreeting("Chúc bạn ngủ ngon");
+    }
+    getGreeting();
+    const timer = setInterval(getGreeting, 60000);
+    return () => clearInterval(timer);
+  }, []);
+
+  return (
+    <div>
+      {/* Sidebar */}
+      <div className="menu">
+        <div className="title">
+          <a href="/">
+            <img src="/images/logo.png" alt="logo" />
           </a>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+        <nav>
+          <a href="#" className="active" data-section="home">
+            <i className="fa-regular fa-compass"></i> Explore
+          </a>
+          <a href="#" data-section="library">
+            <i className="fa-solid fa-book"></i> Library
+          </a>
+          <a href="#" data-section="playlist">
+            <i className="fa-solid fa-list"></i> My Playlist
+          </a>
+        </nav>
+      </div>
+
+      {/* Main */}
+      <div className="main">
+        {/* Header */}
+        <header className="header">
+          <div className="back-next-search">
+            <div className="back chevron">
+              <button>
+                <i className="fa-solid fa-chevron-left"></i>
+              </button>
+            </div>
+            <div className="next chevron">
+              <button>
+                <i className="fa-solid fa-chevron-right"></i>
+              </button>
+            </div>
+            <div className="search-box">
+              <i className="fa-solid fa-magnifying-glass i-search"></i>
+              <input
+                className="input-text"
+                placeholder="Bạn muốn phát nội dung gì?"
+              />
+            </div>
+          </div>
+
+          <div className="header-right">
+            <button className="sign-up head">
+              <a href="/signup" className="a-sign-up">
+                Sign up
+              </a>
+            </button>
+            <button className="login head">
+              <a href="/signin">Sign in</a>
+            </button>
+          </div>
+        </header>
+
+        {/* Content */}
+        <div className="content">
+          {/* HOME */}
+          <div id="home" className="home-menu section active">
+            <div id="greeting" className="greeting-text">
+              {greeting}
+            </div>
+            <h2>Featured Playlists</h2>
+            <div className="playlists">
+              <div className="playlists-card">
+                <img src="/images/p1.jpg" alt="Playlist1" />
+              </div>
+              <div className="playlists-card">
+                <img src="/images/p2.jpg" alt="Playlist2" />
+              </div>
+              <div className="playlists-card">
+                <img src="/images/p3.jpg" alt="Playlist3" />
+              </div>
+              <div className="playlists-card">
+                <img src="/images/p4.jpg" alt="Playlist4" />
+              </div>
+            </div>
+          </div>
+
+          {/* Footer */}
+          <footer className="info">
+            <div className="info-player">
+              <a className="background-singer">
+                <img src="/images/singer.jpg" alt="Singer" />
+              </a>
+              <div className="info-song">
+                <a href="#" className="song-tittle">
+                  Song Title
+                </a>
+                <a href="#" className="artist-name">
+                  Artist Name
+                </a>
+              </div>
+            </div>
+            <div className="player-center">
+              <div className="control">
+                <button className="play">
+                  <i className="fa-solid fa-shuffle"></i>
+                </button>
+                <button className="play">
+                  <i className="fa-solid fa-backward-step"></i>
+                </button>
+                <button className="play-btn">
+                  <i className="fas fa-play"></i>
+                </button>
+                <button className="play">
+                  <i className="fa-solid fa-forward-step"></i>
+                </button>
+                <button className="play">
+                  <i className="fa-solid fa-repeat"></i>
+                </button>
+              </div>
+              <div className="run">
+                <input
+                  type="range"
+                  className="seek-bar"
+                  value={progress}
+                  min="0"
+                  max="100"
+                  onChange={(e) => setProgress(e.target.value)}
+                />
+                <span className="current-time"></span>
+                <span className="music-time">3:45</span>
+              </div>
+            </div>
+            <div className="vol">
+              <button className="volume">
+                <i className="fa-solid fa-volume-high"></i>
+              </button>
+              <input
+                type="range"
+                defaultValue="50"
+                min="0"
+                max="100"
+              />
+            </div>
+          </footer>
+        </div>
+      </div>
     </div>
   );
 }
